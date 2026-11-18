@@ -33,15 +33,16 @@ const projectsData = {
       repo: "#",
     },
   3: {
-    title: "API Toolkit",
-    tags: ["Python", "FastAPI", "Docker", "PostgreSQL"],
+    title: "Mufit - Centro de Entrenamiento Personal",
+    tags: ["WordPress", "PHP", "CSS", "JavaScript"],
     description:
-      "Suite de utilidades para desarrollo y testing de APIs REST. Incluye generador de mocks, documentador automático y runner de tests de carga.",
+      "Desarrollo de una página web para Mufit, un centro de entrenamiento personal. Un sitio web moderno y responsive diseñado para dar visibilidad al centro, presentar sus servicios de entrenamiento y facilitar a los clientes potenciales el contacto y la solicitud de información.",
     features: [
-      "Generación automática de OpenAPI",
-      "Mocks con Faker",
-      "Tests de carga integrados",
-      "Docker-ready",
+      "Desarrollo web personalizado con WordPress y PHP",
+      "Presentación de servicios y planes de entrenamiento",
+      "Diseño responsive adaptado a móviles y tablets",
+      "Secciones informativas sobre el centro y sus entrenamientos",
+      "Formulario de contacto para nuevos clientes",
     ],
     demo: "#",
     repo: "#",

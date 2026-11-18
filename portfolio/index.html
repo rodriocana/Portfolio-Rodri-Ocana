@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rodrigo Ocaña | Desarrollador Full Stack</title>
+  <meta name="description" content="Portfolio de Rodrigo Ocaña Martín-Vázquez — Desarrollador Full Stack especializado en Angular y backend" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Slider de imágenes de proyectos */
+    .project-image { position: relative; overflow: hidden; }
+    .project-image > img.slider-changing { opacity:.35; }
+    .project-slider-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:6; width:36px; height:36px; display:grid; place-items:center; padding:0; border:1px solid rgba(255,255,255,.3); border-radius:50%; background:rgba(10,15,25,.78); color:#fff; font-size:25px; line-height:1; cursor:pointer; opacity:0; transition:opacity .25s ease, background .25s ease; }
+    .project-image:hover .project-slider-btn, .project-image:focus-within .project-slider-btn { opacity:1; }
+    .project-slider-btn:hover { background:var(--accent, #00f0ff); color:#101820; }
+    .project-slider-prev { left:10px; } .project-slider-next { right:10px; }
+    .project-slider-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); z-index:6; display:flex; gap:7px; align-items:center; }
+    .project-slider-dot { width:7px; height:7px; padding:0; border:0; border-radius:50%; background:rgba(255,255,255,.55); cursor:pointer; transition:background .2s ease, transform .2s ease; }
+    .project-slider-dot.active { background:var(--accent, #00f0ff); transform:scale(1.3); }
+    @media (hover:none) { .project-slider-btn { opacity:1; } }
+    @media (prefers-reduced-motion: reduce) { .project-image > img, .project-slider-btn, .project-slider-dot { transition:none; } }
+  </style>
+
+</head>
+<body>
+  <!-- Cursor personalizado -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- Partículas de fondo -->
+  <canvas id="particles"></canvas>
+
+  <!-- Navegación -->
+  <nav class="nav" id="nav">
+    <div class="nav-container">
+      <a href="#hero" class="logo">
+        <span class="logo-bracket">&lt;</span>dev<span class="logo-slash">/</span><span class="logo-bracket">&gt;</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about" class="nav-link">Sobre mí</a></li>
+        <li><a href="#projects" class="nav-link">Proyectos</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#experience" class="nav-link">Experiencia</a></li>
+        <li><a href="#contact" class="nav-link">Contacto</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-greeting mono">Hola, soy</p>
+      <h1 class="hero-name">
+        <span class="name-line">Rodrigo Ocaña</span>
+      </h1>
+      <h2 class="hero-title">
+        <span class="typed-text" id="typedText"></span><span class="cursor-blink">|</span>
+      </h2>
+      <p class="hero-desc">
+        Desarrollador Full Stack con formación en DAM y Desarrollo Web Avanzado,
+        especializado en Angular y desarrollo backend.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">Ver proyectos</a>
+        <a href="#contact" class="btn btn-outline">Contactar</a>
+      </div>
+      <div class="hero-social">
+        <a href="#" class="social-link" aria-label="GitHub" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Twitter / X" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="code-window">
+        <div class="code-header">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="code-title">portfolio.ts</span>
+        </div>
+        <pre class="code-body"><code><span class="kw">const</span> <span class="var">developer</span> = {
+  <span class="key">name</span>: <span class="str">"Rodrigo Ocaña"</span>,
+  <span class="key">role</span>: <span class="str">"Full-Stack"</span>,
+  <span class="key">stack</span>: [<span class="str">"Angular"</span>, <span class="str">"Node"</span>, <span class="str">"PHP"</span>, <span class="str">"JS"</span>],
+  <span class="key">available</span>: <span class="bool">true</span>
+};</code></pre>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Sobre mí -->
+  <section class="section about" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number mono">01.</span>
+        <h2 class="section-title">Sobre mí</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Desarrollador Full Stack con formación en DAM y Desarrollo Web Avanzado,
+            especializado en la creación de aplicaciones web con Angular y desarrollo backend.
+          </p>
+          <p>
+            Complemento mis conocimientos técnicos con experiencia en diseño gráfico,
+            aportando una visión creativa y funcional al desarrollo de soluciones digitales.
+          </p>
+          <p>
+            Me enfoco en construir soluciones completas: desde el diseño y gestión de bases
+            de datos hasta la lógica de negocio y interfaces de usuario interactivas.
+          </p>
+          <div class="about-highlights">
+            <div class="highlight">
+              <span class="highlight-num">3+</span>
+              <span class="highlight-label">Años de experiencia</span>
+            </div>
+            <div class="highlight">
+              <span class="highlight-num">Angular</span>
+              <span class="highlight-label">Stack principal</span>
+            </div>
+            <div class="highlight">
+              <span class="highlight-num">Full</span>
+              <span class="highlight-label">Stack Developer</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-image">
+          <div class="image-frame">
+            <div class="image-placeholder">
+              <img src="assets/foot-linkdin.jpeg" alt="Imagen de perfil" loading="lazy" />
+            </div>
+            <div class="frame-border"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proyectos -->
+  <section class="section projects" id="projects">
+    <div class="container-projects">
+      <div class="section-header">
+        <span class="section-number mono">02.</span>
+        <h2 class="section-title">Proyectos</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="projects-filter">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="web">Web</button>
+        <button class="filter-btn" data-filter="app">Apps</button>
+        <button class="filter-btn" data-filter="tool">Herramientas</button>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+
+         <!-- Proyecto 1 -->
+                <article class="project-card" data-category="app" data-id="2">
+          <div class="project-image">
+            <img src="assets/projects/netflix-principal.png" data-images="assets/projects/netflix_principal.png,assets/projects/netflix_3.png,assets/projects/netflix_1.png,assets/projects/netflix_4.png" alt="Proyecto Netflix" loading="lazy" />
+            <button class="project-slider-btn project-slider-prev" type="button" aria-label="Imagen anterior">‹</button>
+          <button class="project-slider-btn project-slider-next" type="button" aria-label="Imagen siguiente">›</button>
+          <div class="project-slider-dots" aria-label="Seleccionar imagen"></div>
+          <div class="project-overlay">
+              <button class="project-btn" data-project="2">Ver detalles</button>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span>React JS</span><span>Vite</span><span>Firebase</span>
+            </div>
+            <h3 class="project-title">Proyecto Netflix</h3>
+            <p class="project-desc">Proyecto personal de aprendizaje de React JS, Vite y Firebase imitando a Netflix + IMDB </p>
+          </div>
+        </article>
+
+
+        <!-- Proyecto 2 -->
+      <article class="project-card" data-category="web" data-id="1">
+        <div class="project-image">
+          <img src="assets/projects/dashboard.jpg" data-images="assets/projects/DASHBOARD-1.jpg,assets/projects/DASHBOARD-2.jpg" alt="Dashboard de Analítica" loading="lazy" />
+          <button class="project-slider-btn project-slider-prev" type="button" aria-label="Imagen anterior">‹</button>
+          <button class="project-slider-btn project-slider-next" type="button" aria-label="Imagen siguiente">›</button>
+          <div class="project-slider-dots" aria-label="Seleccionar imagen"></div>
+          <div class="project-overlay">
+            <button class="project-btn" data-project="1">Ver detalles</button>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-tags">
+            <span>Angular</span><span>Full Stack</span><span>KPIs</span>
+          </div>
+          <h3 class="project-title">Dashboard de Analítica para cliente con más de 26 millones de facturación anuales y 400 trabajadores.</h3>
+          <p class="project-desc">Dashboard Full Stack orientado a la visualización de KPIs e indicadores de negocio. (Datos ficticios por motivos de privacidad)</p>
+        </div>
+      </article>
+
+
+        <!-- Proyecto 3 -->
+        <article class="project-card" data-category="tool" data-id="3">
+          <div class="project-image">
+            <img src="assets/projects/mufit_1.png" data-images="assets/projects/mufit_2.png,assets/projects/mufit_1.png, assets/projects/mufit_3.png" alt="Web MUFIT" loading="lazy" />
+            <button class="project-slider-btn project-slider-prev" type="button" aria-label="Imagen anterior">‹</button>
+          <button class="project-slider-btn project-slider-next" type="button" aria-label="Imagen siguiente">›</button>
+          <div class="project-slider-dots" aria-label="Seleccionar imagen"></div>
+          <div class="project-overlay">
+              <button class="project-btn" data-project="3">Ver detalles</button>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span>Python</span><span>FastAPI</span><span>Docker</span>
+            </div>
+            <h3 class="project-title">Web MUFIT</h3>
+            <p class="project-desc">Suite de utilidades para desarrollo y testing de APIs REST.</p>
+          </div>
+        </article>
+
+        <!-- Proyecto 4 -->
+        <article class="project-card" data-category="web" data-id="4">
+          <div class="project-image">
+            <img src="assets/projects/angular-cine_1.png" data-images="assets/projects/angular-cine_4.png,assets/projects/angular-cine_3.png,assets/projects/angular-cine_2.png, assets/projects/angular-cine_1.png,assets/projects/angular-cine_6.png,assets/projects/angular-cine_5.png" alt="Cine web" loading="lazy" />
+            <button class="project-slider-btn project-slider-prev" type="button" aria-label="Imagen anterior">‹</button>
+          <button class="project-slider-btn project-slider-next" type="button" aria-label="Imagen siguiente">›</button>
+          <div class="project-slider-dots" aria-label="Seleccionar imagen"></div>
+          <div class="project-overlay">
+              <button class="project-btn" data-project="4">Ver detalles</button>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span>Angular</span><span>API</span><span>Tailwind</span>
+            </div>
+            <h3 class="project-title">Proyecto final de grado -  Cine web</h3>
+            <p class="project-desc">Proyecto de un cine con cartelera de películas, gestión de usuarios, lista de favoritos, compra de entradas y tienda.</p>
+          </div>
+        </article>
+
+        <!-- Proyecto 5 -->
+        <article class="project-card" data-category="tool" data-id="5">
+          <div class="project-image">
+            <img src="assets/projects/code-snippets.jpg" data-images="assets/projects/code-snippets.jpg,assets/projects/code-snippets-2.jpg,assets/projects/code-snippets-3.jpg" alt="Code Snippets Manager" loading="lazy" />
+            <button class="project-slider-btn project-slider-prev" type="button" aria-label="Imagen anterior">‹</button>
+          <button class="project-slider-btn project-slider-next" type="button" aria-label="Imagen siguiente">›</button>
+          <div class="project-slider-dots" aria-label="Seleccionar imagen"></div>
+          <div class="project-overlay">
+              <button class="project-btn" data-project="5">Ver detalles</button>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span>Vue</span><span>Electron</span>
+            </div>
+            <h3 class="project-title">Code Snippets Manager</h3>
+            <p class="project-desc">Aplicación de escritorio para organizar y buscar snippets de código.</p>
+          </div>
+        </article>
+
+        <!-- Proyecto 6 -->
+        <article class="project-card" data-category="app" data-id="6">
+          <div class="project-image">
+            <img src="assets/projects/fittrack.jpg" data-images="assets/projects/fittrack.jpg,assets/projects/fittrack-2.jpg,assets/projects/fittrack-3.jpg" alt="FitTrack" loading="lazy" />
+            <button class="project-slider-btn project-slider-prev" type="button" aria-label="Imagen anterior">‹</button>
+          <button class="project-slider-btn project-slider-next" type="button" aria-label="Imagen siguiente">›</button>
+          <div class="project-slider-dots" aria-label="Seleccionar imagen"></div>
+          <div class="project-overlay">
+              <button class="project-btn" data-project="6">Ver detalles</button>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span>Flutter</span><span>Dart</span>
+            </div>
+            <h3 class="project-title">FitTrack</h3>
+            <p class="project-desc">App de seguimiento de entrenamiento con análisis de progreso y rutinas.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="section skills" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number mono">03.</span>
+        <h2 class="section-title">Skills & Tech</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3 class="skill-cat-title mono">// Frontend</h3>
+          <div class="skill-items">
+            <div class="skill-item" data-level="90">
+              <span class="skill-name">Angular (v17 / v18)</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="85">
+              <span class="skill-name">JavaScript</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="75">
+              <span class="skill-name">ReactJS</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="80">
+              <span class="skill-name">HTML / CSS</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3 class="skill-cat-title mono">// Backend</h3>
+          <div class="skill-items">
+            <div class="skill-item" data-level="85">
+              <span class="skill-name">Node.js / Express</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="80">
+              <span class="skill-name">PHP</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="70">
+              <span class="skill-name">Python</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="75">
+              <span class="skill-name">Java</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3 class="skill-cat-title mono">// Otros</h3>
+          <div class="skill-items">
+            <div class="skill-item" data-level="80">
+              <span class="skill-name">Diseño gráfico</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="75">
+              <span class="skill-name">Bases de datos</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="70">
+              <span class="skill-name">APIs REST</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="85">
+              <span class="skill-name">Desarrollo Web</span>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experiencia / Curriculum -->
+  <section class="section experience" id="experience">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number mono">04.</span>
+        <h2 class="section-title">Experiencia</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date mono">Ene 2026 — Nov 2026</span>
+            <h3 class="timeline-title">Desarrollador Full Stack</h3>
+            <p class="timeline-company">Dashboard de Analítica</p>
+            <p class="timeline-desc">
+              Desarrollo Full Stack de un Dashboard de analítica con Angular, orientado a la
+              visualización de KPIs e indicadores de negocio. Implementación integral de la
+              solución: diseño y gestión de la base de datos, lógica de negocio e interfaz
+              de usuario interactiva. Desarrollo, mantenimiento y optimización de páginas web.
+            </p>
+            <div class="timeline-tags">
+              <span>Angular</span><span>Full Stack</span><span>KPIs</span><span>Base de datos</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date mono">Ene 2025 — Ene 2026</span>
+            <h3 class="timeline-title">Desarrollador Web Full Stack</h3>
+            <p class="timeline-company">Desarrollo de aplicaciones web</p>
+            <p class="timeline-desc">
+              Desarrollo de aplicaciones web frontend con Angular (v18). Implementación de
+              APIs y servicios de Backend con Node.js y Express. Desarrollo y mantenimiento
+              de páginas web con PHP.
+            </p>
+            <div class="timeline-tags">
+              <span>Angular v18</span><span>Node.js</span><span>Express</span><span>PHP</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date mono">Mar 2024 — Dic 2024</span>
+            <h3 class="timeline-title">Desarrollo Web Avanzado</h3>
+            <p class="timeline-company">Backus — Bollullos</p>
+            <p class="timeline-desc">
+              Desarrollo de procesos intermedios con Python. Mantenimiento de aplicaciones
+              web en Angular v17 y desarrollo de APIs.
+            </p>
+            <div class="timeline-tags">
+              <span>Angular v17</span><span>Python</span><span>APIs</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Experiencia Xerox -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date mono">2014 — 2022</span>
+            <h3 class="timeline-title">Técnico de Sistemas de Impresión y Automatización</h3>
+            <p class="timeline-company">Autónomo — Colaborador técnico de XEROX</p>
+            <p class="timeline-desc">
+              Instalación, configuración y mantenimiento de impresoras y equipos
+              multifunción en empresas privadas y organismos públicos. Desarrollo
+              e implementación de scripts para automatizar procesos de instalación,
+              configuración y parametrización de dispositivos de impresión.
+              Despliegue de soluciones en diferentes entornos empresariales,
+              incluyendo El Corte Inglés, Hacienda, juzgados, grandes imprentas
+              y empresas locales. Resolución de incidencias y adaptación de
+              configuraciones a las necesidades técnicas de cada cliente.
+            </p>
+            <div class="timeline-tags">
+              <span>XEROX</span>
+              <span>Scripts</span>
+              <span>Automatización</span>
+              <span>Impresión</span>
+              <span>Soporte técnico</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experiencia Diario de Sevilla -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date mono">2012 — 2014</span>
+            <h3 class="timeline-title">Diseñador Gráfico y Maquetador Editorial</h3>
+            <p class="timeline-company">Diario de Sevilla — Grupo Joly</p>
+            <p class="timeline-desc">
+              Tratamiento, edición y optimización de imágenes para su publicación
+              en el periódico. Maquetación de secciones y contenidos editoriales
+              mediante HTML, adaptando los elementos gráficos y visuales a los
+              requisitos de publicación digital. Colaboración en los procesos
+              de composición y preparación de contenidos del diario.
+            </p>
+            <div class="timeline-tags">
+              <span>HTML</span>
+              <span>Maquetación</span>
+              <span>Diseño gráfico</span>
+              <span>Tratamiento de imágenes</span>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- Educación -->
+      <div class="education-block" style="margin-top: 4rem;">
+        <h3 class="skill-cat-title mono" style="margin-bottom: 1.5rem;">// Educación</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <span class="timeline-date mono">2022 — 2024</span>
+              <h3 class="timeline-title">Formación DAM / Desarrollo Web</h3>
+              <p class="timeline-company">I.E.S. Majuelo — Gines</p>
+              <p class="timeline-desc">
+                Formación en Desarrollo de Aplicaciones Multiplataforma y Desarrollo Web Avanzado.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <span class="timeline-date mono">2010 — 2012</span>
+              <h3 class="timeline-title">Bachillerato</h3>
+              <p class="timeline-company">I.E.S. Néstor Almendros — Tomares</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-download">
+        <a href="#" class="btn btn-outline" download>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Descargar CV (PDF)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number mono">05.</span>
+        <h2 class="section-title">Contacto</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="contact-content">
+        <p class="contact-intro">
+          ¿Tienes un proyecto en mente o quieres colaborar?<br />
+          Estoy disponible para nuevas oportunidades.
+        </p>
+        <a href="mailto:rodriocanamv@gmail.com" class="contact-email mono">
+          rodriocanamv@gmail.com
+        </a>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem;">
+          +34 687 34 89 32
+        </p>
+        <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 2.5rem;">
+          Rotonda Santa Eufemia Nº2, 41940 Tomares, Sevilla
+        </p>
+        <form class="contact-form" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Nombre</label>
+              <input type="text" id="name" name="name" required placeholder="Tu nombre" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required placeholder="tu@email.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Cuéntame sobre tu proyecto..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Enviar mensaje
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text mono">
+        Diseñado & construido por Rodrigo Ocaña con <span class="heart">♥</span> — 2026
+      </p>
+      <p class="footer-copy">© Rodrigo Ocaña Martín-Vázquez. Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <!-- Modal de proyecto -->
+  <div class="modal" id="projectModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="modal-body" id="modalBody">
+        <!-- Contenido dinámico -->
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Slider independiente para cada tarjeta de proyecto
+    document.querySelectorAll('.project-image').forEach((container) => {
+      const img = container.querySelector(':scope > img');
+      if (!img) return;
+      const images = (img.dataset.images || img.src).split(',').map((path) => path.trim()).filter(Boolean);
+      if (images.length <= 1) {
+        container.querySelectorAll('.project-slider-btn, .project-slider-dots').forEach((el) => el.hidden = true);
+        return;
+      }
+      const prev = container.querySelector('.project-slider-prev');
+      const next = container.querySelector('.project-slider-next');
+      const dotsWrap = container.querySelector('.project-slider-dots');
+      let current = Math.max(0, images.indexOf(img.getAttribute('src')));
+      let timer;
+      const dots = images.map((_, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'project-slider-dot';
+        dot.setAttribute('aria-label', `Mostrar imagen ${index + 1}`);
+        dot.addEventListener('click', (event) => { event.stopPropagation(); show(index); restart(); });
+        dotsWrap.appendChild(dot);
+        return dot;
+      });
+      function show(index) {
+        current = (index + images.length) % images.length;
+        img.classList.add('slider-changing');
+        const nextSrc = images[current];
+        const preload = new Image();
+        preload.onload = () => { img.src = nextSrc; img.classList.remove('slider-changing'); };
+        preload.onerror = () => { img.classList.remove('slider-changing'); };
+        preload.src = nextSrc;
+        img.alt = `${img.alt.replace(/ — imagen \d+$/, '')} — imagen ${current + 1}`;
+        dots.forEach((dot, i) => { dot.classList.toggle('active', i === current); dot.setAttribute('aria-pressed', String(i === current)); });
+      }
+      function restart() { clearInterval(timer); timer = setInterval(() => show(current + 1), 65500); }
+      prev.addEventListener('click', (event) => { event.stopPropagation(); show(current - 1); restart(); });
+      next.addEventListener('click', (event) => { event.stopPropagation(); show(current + 1); restart(); });
+      container.addEventListener('mouseenter', () => clearInterval(timer));
+      container.addEventListener('mouseleave', restart);
+      container.addEventListener('focusin', () => clearInterval(timer));
+      container.addEventListener('focusout', restart);
+      show(current);
+      restart();
+    });
+  </script>
+
+</body>
+</html>
